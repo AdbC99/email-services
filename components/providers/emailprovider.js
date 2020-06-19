@@ -32,52 +32,52 @@ class EmailProvider {
         console.log("validating email: " + JSON.stringify(email));
 
         if (!email.from)
-            throw "Must have a from email address";
+            throw new Error("Must have a from email address");
         if (!email.subject)
-            throw "Must have a subject";
+            throw new Error("Must have a subject");
         if (!email.body)
-            throw "Must have a body";
+            throw new Error("Must have a body");
         if (!email.to)
-            throw "Must have to email address(s)";
+            throw new Error("Must have to email address(s)");
 
         if (!this.validEmail(email.from))
-            throw email.from + " is not a valid email address";
+            throw new Error(email.from + " is not a valid email address");
 
         if (typeof email.to !== typeof [])
-            throw "Email to must be an array";
+            throw new Error("Email to must be an array");
 
         email.to.forEach(element => {
             if (!this.validEmail(element))
-                throw element + " is not a valid email address";    
+                throw new Error(element + " is not a valid email address");    
         });
 
         if (email.cc)
         {
             if (typeof email.cc !== typeof [])
-                throw "Email cc must be an array";
+                throw new Error("Email cc must be an array");
 
             email.cc.forEach(element => {
                 if (!this.validEmail(element))
-                    throw element + " is not a valid email address";    
+                    throw new Error(element + " is not a valid email address");    
             });
         }
 
         if (email.bcc)
         {
             if (typeof email.bcc !== typeof [])
-                throw "Email bcc must be an array";
+                throw new Error("Email bcc must be an array");
             
             email.bcc.forEach(element => {
                 if (!this.validEmail(element))
-                    throw element + " is not a valid email address";    
+                    throw new Error(element + " is not a valid email address");    
             });
         }
 
         if (typeof email.subject !== typeof "")
-            throw "Subject must be a string";
+            throw new Error("Subject must be a string");
             
         if (typeof email.body !== typeof "")
-            throw "Body must be a string";
+            throw new Error("Body must be a string");
     }
 
     send(email) {

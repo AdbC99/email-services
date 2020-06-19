@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "nyc mocha test/**/*.test.js --exit --inspect=0.0.0.0:9229 --timeout 12000"
   },
   "dependencies": {
     "cookie-parser": "^1.4.5",
@@ -15,10 +16,16 @@
     "http-errors": "^1.7.3",
     "jade": "^1.11.0",
     "morgan": "^1.9.1",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "util.promisify": "^1.0.1"
   },
   "engines": {
     "node": "10.x"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.0.1",
+    "nyc": "^15.1.0",
+    "test": "^0.6.0"
+  }
 }

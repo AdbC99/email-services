@@ -29,7 +29,7 @@ router.post('/send', function(req, res, next) {
 
     try {
         emailSendGrid.validate(req.body);
-        console.log('kept going')
+
         emailSendGrid.send(req.body)
             .then(data => {
                 console.log('Success:', data);
@@ -37,6 +37,7 @@ router.post('/send', function(req, res, next) {
             })
             .catch((error) => {
                 console.error('SendGrid Error:', error);
+
                 // Sendgrid failed so failover to mailgun
                 emailMailGun.send(req.body)
                     .then(data => {
@@ -44,15 +45,15 @@ router.post('/send', function(req, res, next) {
                         res.sendStatus(200);
                     })
                     .catch((error) => {
-                        console.error('Error:', error);
+                        console.error('MailGun Error:', error);
                         res.sendStatus(400);
                     });
             });
     }
     catch (err)
     {
-        console.log(err)
-        res.status(400).send(err);
+        console.error(err.message)
+        res.status(400).send(err.message);
     }
 });
 
@@ -72,7 +73,7 @@ router.post('/sendgrid', function(req, res, next) {
 
     try {
         email.validate(req.body);
-        console.log('kept going')
+
         email.send(req.body)
             .then(data => {
                 console.log('Success:', data);
@@ -85,8 +86,8 @@ router.post('/sendgrid', function(req, res, next) {
     }
     catch (err)
     {
-        console.log(err)
-        res.status(400).send(err);
+        console.error(err.message)
+        res.status(400).send(err.message);
     }
 });
 
@@ -108,7 +109,7 @@ router.post('/mailgun', function(req, res, next) {
 
     try {
         email.validate(req.body);
-        console.log('kept going')
+
         email.send(req.body)
             .then(data => {
                 if (data.status > 300)
@@ -129,8 +130,8 @@ router.post('/mailgun', function(req, res, next) {
     }
     catch (err)
     {
-        console.log(err)
-        res.status(400).send(err);
+        console.error(err.message)
+        res.status(400).send(err.message);
     }
 });
 
