@@ -8,7 +8,7 @@ class SendGridProvider extends EmailProvider {
 
     send(email) {
         // Call validate(email) before using this to check we have valid input
-        console.log(`sends an email via sendgrid`);
+        console.log(`Email: sending an email via sendgrid`);
 
         let emailBody = {
             "personalizations": 
@@ -60,8 +60,6 @@ class SendGridProvider extends EmailProvider {
                 emailBody.personalizations[0].bcc.push({"email":element});
             })
         }
-
-        console.log("Sending", JSON.stringify(emailBody));
 
         return fetch(process.env.SENDGRID_URL, {
             method: 'POST',

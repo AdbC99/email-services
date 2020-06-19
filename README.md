@@ -11,6 +11,37 @@ being run from swagger online; however they can be run locally.
 There are 3 endpoints, for the coding test only the send endpoint is relevant:
 https://email-services-app.herokuapp.com/v1/email/send
 
+## Test Payloads
+
+The access to mailgun and sendgrid is not unrestricted and so payloads are important:
+
+The mailgun api can only send to one email address at present which is adbc@theshapeofsound.com:
+
+curl --location --request POST 'http://email-services-app.herokuapp.com/v1/email/send' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"from":"alix.1999@gmail.com",
+	"to":["adbc@theshapeofsound.com"],
+	"subject":"subject",
+	"body":"body",
+	"cc":["adbc@theshapeofsound.com","adbc@theshapeofsound.com"]
+}'
+
+The sendgrid api can only send from one email adress at this time which is alix.1999@gmail.com and
+must have unique email addresss in each section:
+
+curl --location --request POST 'http://email-services-app.herokuapp.com/v1/email/send' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"from":"alix.1999@gmail.com",
+	"to":["adbc@theshapeofsound.com"],
+	"subject":"subject",
+	"body":"body",
+	"cc":["test@example.com","test2@example.com"]
+}'
+
+The send api will try both
+
 ## Install
 
 To install this app clone the app from github into a suitable folder and type:
@@ -40,7 +71,7 @@ For mailgun the email must be sent to:
     adbc@theshapeofsound.com
 
 ## TODO
-
+ 
    * Github has found some dependencies with security issues (constantinople and clean-css) which should be reviewed
    * Swagger tests work locally but not online, ran out of time before fixing
    * Unit tests require much better coverage but ran out of time

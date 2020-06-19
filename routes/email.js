@@ -32,7 +32,11 @@ router.post('/send', function(req, res, next) {
 
         emailSendGrid.send(req.body)
             .then(data => {
-                console.log('Success:', data);
+                if (data.status > 300)
+                    throw new Error(data.statusText);
+
+                console.log('Success:', data.statusText);
+
                 res.sendStatus(200);
             })
             .catch((error) => {
@@ -41,7 +45,10 @@ router.post('/send', function(req, res, next) {
                 // Sendgrid failed so failover to mailgun
                 emailMailGun.send(req.body)
                     .then(data => {
-                        console.log('Success:', data);
+                        if (data.status > 300)
+                            throw new Error(data.statusText);
+                            
+                        console.log('Success:', data.statusText);
                         res.sendStatus(200);
                     })
                     .catch((error) => {
@@ -76,8 +83,16 @@ router.post('/sendgrid', function(req, res, next) {
 
         email.send(req.body)
             .then(data => {
-                console.log('Success:', data);
-                res.sendStatus(200);
+                if (data.status > 300)
+                {
+                    console.error('Error:', data.statusText)
+                }
+                else
+                {
+                    console.log('Success:', data.statusText);
+                }
+
+                res.status(data.status).send(data.statusText);
             })
             .catch((error) => {
                 console.error('Error:', error);

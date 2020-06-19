@@ -23,13 +23,6 @@ class EmailProvider {
     }
 
     validate(email) {
-        // An automatic json validator would have been preferred; however jsonschema
-        // doesn't validate email addresses and so I would have had to validate in
-        // multiple different ways and so manual validation was used 
-        //
-        // In a production system I would have customised a json validator to do the job
-        // or spent more time researching a better validator
-        console.log("validating email: " + JSON.stringify(email));
 
         if (!email.from)
             throw new Error("Must have a from email address");

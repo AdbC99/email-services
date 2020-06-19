@@ -9,7 +9,7 @@ class MailGunProvider extends EmailProvider {
 
     send(email) {
         // Call validate(email) before using this to check we have valid input
-        console.log(`sends an email via mailgun`);
+        console.log(`Email: sending an email via mailgun`);
 
         let formData = new URLSearchParams();
 
@@ -56,8 +56,6 @@ class MailGunProvider extends EmailProvider {
             },
             body:formData
         }
-
-        console.log(emailOptions);
 
         return fetch(process.env.MAILGUN_URL, emailOptions );
     }
