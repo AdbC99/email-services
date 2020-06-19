@@ -19,7 +19,7 @@ let options = {
           title: 'Email Service',
           version: '1.0.0',
       },
-      host: 'localhost:3000',
+      host: 'localhost:'+ (process.env.PORT || '3000'),
       basePath: '/v1',
       produces: [
           "application/json",

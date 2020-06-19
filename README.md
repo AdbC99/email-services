@@ -40,7 +40,7 @@ For mailgun the email must be sent to:
 
    * Github has found some dependencies with security issues (constantinople and clean-css) which should be reviewed
    * Unit tests require much better coverage but ran out of time
-   * Static pages remain unconfigured
+   * Static pages remain unchanged from standard express pages
    * Configure domain records for mailgun and sendgrid to remove mail restrictions
    * Input validation should use something like jsonschema but better to automate validation
    * Email validation is not as good as it could be when a different name to email address is unrestricted
