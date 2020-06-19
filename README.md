@@ -39,6 +39,7 @@ For mailgun the email must be sent to:
 ## TODO
 
    * Github has found some dependencies with security issues (constantinople and clean-css) which should be reviewed
+   * Cors has been left wide open with origin *
    * Unit tests require much better coverage but ran out of time
    * Static pages remain unchanged from standard express pages
    * Configure domain records for mailgun and sendgrid to remove mail restrictions
