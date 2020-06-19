@@ -1,6 +1,5 @@
 var createError = require('http-errors');
 var express = require('express');
-var cors = require('cors');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -32,13 +31,6 @@ let options = {
 };
 
 expressSwagger(options)
-
-// TODO: Cors is totally unrestricted now so that swagger can work, that might want to change at a later date
-var corsOptions = {
-  origin: '*'
-}
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

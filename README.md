@@ -5,6 +5,9 @@ API providing email send email to a provider with failure handling
 The endpoints are documented on swagger page at:
 https://email-services-app.herokuapp.com/api-docs
 
+Unfortunately there is an error I didn't have time to fix, stopping the endpoints 
+being run from swagger online; however they can be run locally.
+
 There are 3 endpoints, for the coding test only the send endpoint is relevant:
 https://email-services-app.herokuapp.com/v1/email/send
 
@@ -39,7 +42,7 @@ For mailgun the email must be sent to:
 ## TODO
 
    * Github has found some dependencies with security issues (constantinople and clean-css) which should be reviewed
-   * Cors has been left wide open with origin *
+   * Swagger tests work locally but not online, ran out of time before fixing
    * Unit tests require much better coverage but ran out of time
    * Static pages remain unchanged from standard express pages
    * Configure domain records for mailgun and sendgrid to remove mail restrictions
