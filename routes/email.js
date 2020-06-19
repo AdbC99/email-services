@@ -13,6 +13,49 @@ var mailgun = new require('../components/providers/mailgun');
  * @property {Array.<string>} bcc - bcc email addresses
  */
 
+ /**
+ * Send an email with failover
+ * @route POST /email/send
+ * @group email - Operations to send emails
+ * @param {Email.model} email.body.required - the email
+ * @returns {object} 200 - email was sent successfully
+ * @returns {Error}  400 - failed to send email
+ * @returns {Error}  default - Unexpected error
+ */
+
+router.post('/send', function(req, res, next) {
+    let emailSendGrid = new sendgrid();
+    let emailMailGun = new mailgun();
+
+    try {
+        emailSendGrid.validate(req.body);
+        console.log('kept going')
+        emailSendGrid.send(req.body)
+            .then(data => {
+                console.log('Success:', data);
+                res.sendStatus(200);
+            })
+            .catch((error) => {
+                console.error('SendGrid Error:', error);
+                // Sendgrid failed so failover to mailgun
+                emailMailGun.send(req.body)
+                    .then(data => {
+                        console.log('Success:', data);
+                        res.sendStatus(200);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        res.sendStatus(400);
+                    });
+            });
+    }
+    catch (err)
+    {
+        console.log(err)
+        res.status(400).send(err);
+    }
+});
+
 /**
  * Send an email via sendgrid
  * @route POST /email/sendgrid
