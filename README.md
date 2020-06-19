@@ -14,7 +14,13 @@ To install this app clone the app from github into a suitable folder and type:
 
 npm install
 
-Next run the app 
+Next run the app with:
+
+npm start
+
+Or run the unit tests with:
+
+npm test
 
 ## Issues
 
@@ -32,6 +38,8 @@ For mailgun the email must be sent to:
 
 ## TODO
 
+   * Unit tests require much better coverage but ran out of time
+   * Static pages remain unconfigured
    * Configure domain records for mailgun and sendgrid to remove mail restrictions
    * Input validation should use something like jsonschema but better to automate validation
    * Email validation is not as good as it could be when a different name to email address is unrestricted
