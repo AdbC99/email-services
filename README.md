@@ -38,6 +38,7 @@ For mailgun the email must be sent to:
 
 ## TODO
 
+   * Github has found some dependencies with security issues (constantinople and clean-css) which should be reviewed
    * Unit tests require much better coverage but ran out of time
    * Static pages remain unconfigured
    * Configure domain records for mailgun and sendgrid to remove mail restrictions
