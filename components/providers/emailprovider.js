@@ -68,7 +68,7 @@ class EmailProvider {
                 throw "Email bcc must be an array";
             
             email.bcc.forEach(element => {
-                if (!validEmail(element))
+                if (!this.validEmail(element))
                     throw element + " is not a valid email address";    
             });
         }

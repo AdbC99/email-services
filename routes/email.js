@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var sendgrid = new require('../components/providers/sendgrid');
+var mailgun = new require('../components/providers/mailgun');
 
 /**
  * @typedef Email - model for an email
@@ -24,7 +25,7 @@ var sendgrid = new require('../components/providers/sendgrid');
 
 router.post('/sendgrid', function(req, res, next) {
 
-    let email = new sendgrid("alix.1999@gmail.com");
+    let email = new sendgrid();
 
     try {
         email.validate(req.body);
@@ -33,6 +34,50 @@ router.post('/sendgrid', function(req, res, next) {
             .then(data => {
                 console.log('Success:', data);
                 res.sendStatus(200);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                res.sendStatus(400);
+            });
+    }
+    catch (err)
+    {
+        console.log(err)
+        res.status(400).send(err);
+    }
+});
+
+/**
+ * Send an email via mailgun
+ * @route POST /email/mailgun
+ * @group email - Operations to send emails
+ * @param {Email.model} email.body.required - the email
+ * @returns {object} 200 - email was sent successfully
+ * @returns {Error}  400 - failed to send email
+ * @returns {Error}  default - Unexpected error
+ */
+
+router.post('/mailgun', function(req, res, next) {
+
+    let email = new mailgun();
+
+    console.log("mailgun");
+
+    try {
+        email.validate(req.body);
+        console.log('kept going')
+        email.send(req.body)
+            .then(data => {
+                if (data.status > 300)
+                {
+                    console.error('Error:', data.statusText)
+                }
+                else
+                {
+                    console.log('Success:', data.statusText);
+                }
+
+                res.status(data.status).send(data.statusText);
             })
             .catch((error) => {
                 console.error('Error:', error);
