@@ -8,11 +8,15 @@
   "dependencies": {
     "cookie-parser": "^1.4.5",
     "debug": "^2.6.9",
+    "dotenv": "^8.2.0",
+    "email-validator": "^2.0.4",
     "express": "^4.16.4",
     "express-swagger-generator": "^1.1.17",
     "http-errors": "^1.7.3",
     "jade": "^1.11.0",
-    "morgan": "^1.9.1"
+    "jsonschema": "^1.2.6",
+    "morgan": "^1.9.1",
+    "node-fetch": "^2.6.0"
   },
   "engines": {
     "node": "10.x"
