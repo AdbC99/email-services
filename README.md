@@ -48,6 +48,12 @@ To install this app clone the app from github into a suitable folder and type:
 
 npm install
 
+You will also need to add a .env file with the following variables set:
+SENDGRID_API_KEY=
+SENDGRID_URL=
+MAILGUN_API_KEY=
+MAILGUN_URL=
+
 Next run the app with:
 
 npm start
