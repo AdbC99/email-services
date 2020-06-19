@@ -1,7 +1,6 @@
 
 let EmailProvider = require('./emailprovider');
 const fetch = require("node-fetch");
-let FormData = require("form-data");
 
 class MailGunProvider extends EmailProvider {
     constructor() {
@@ -11,8 +10,6 @@ class MailGunProvider extends EmailProvider {
     send(email) {
         // Call validate(email) before using this to check we have valid input
         console.log(`sends an email via mailgun`);
-
-        //let formData = new FormData();
 
         let formData = new URLSearchParams();
 
