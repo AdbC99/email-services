@@ -46,7 +46,7 @@ router.post('/send', function(req, res, next) {
         emailSendGrid.validate(req.body);
 
         // I looked at a couple of alternatives to nesting the method in this way
-        // because I am not a big fan of nested promises. A chained promise in this case
+        // because I am not a big fan of deep nesting. A chained promise in this case
         // resulted in less clear code as I handled exceptions and invalid status codes
         // separately, whereas a generic function that takes any email provider resulted
         // in cleaner code for me this time.
