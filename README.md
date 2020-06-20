@@ -1,5 +1,5 @@
 # Email-Services
-API providing email send email to a provider with failure handling
+API providing the abilithy send email to a provider, if that provider fails then it will fall back to another provider
 
 ## Demo
 The endpoints are documented on swagger page at:
@@ -102,6 +102,7 @@ For mailgun the email must be sent to:
    * Configure domain records for mailgun and sendgrid to remove mail restrictions
    * Input validation should use something like jsonschema but better to automate validation
    * Email validation is not as good as it could be when a different name to email address is unrestricted
+   * Email validation does not check for duplicate emails that confuse sendgrid
    * Failure handling for email/send endpoint is nested to the maximum that I would do in an app, if this
    were any more complex then I would refactor the email sending code so that the provider classes take 
    on more responsibility
