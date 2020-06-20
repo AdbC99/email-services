@@ -43,7 +43,7 @@ router.post('/send', function(req, res, next) {
     try
     {
         // Validate email payload and throw an exception if anything is wrong
-        email.validate(req.body);
+        emailSendGrid.validate(req.body);
 
         // I looked at a couple of alternatives to nesting the method in this way
         // because I am not a big fan of nested promises. A chained promise in this case
