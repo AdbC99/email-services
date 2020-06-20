@@ -1,4 +1,4 @@
-# email-services
+# Email-Services
 API providing email send email to a provider with failure handling
 
 ## Demo
