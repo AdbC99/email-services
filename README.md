@@ -55,7 +55,8 @@ To install this app clone the app from github into a suitable folder and type:
 npm install
 ```
 
-You will also need to add a .env file with the following variables set:
+You will also need to add a .env file with the following variables or add
+the following variables as envrionment variables on your server:
 ```
 SENDGRID_API_KEY=
 SENDGRID_URL=
