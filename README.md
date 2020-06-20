@@ -75,6 +75,20 @@ Or run the unit tests with:
 npm test
 ```
 
+You will then be able to make a POST request to the BASE_URL/v1/email/send
+endpoint with this payload:
+
+```
+{
+	"from":"alix.1999@gmail.com",
+	"to":["adbc@theshapeofsound.com"],
+	"subject":"subject",
+	"body":"body",
+	"cc":["test@example.com","test2@example.com"],
+	"bcc":["test3@example.com"]
+}
+```
+
 ## Issues
 
 Swagger works on a local deployment but not on the demo deployment, as it is not
