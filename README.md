@@ -2,14 +2,14 @@
 API providing the abilithy send email to a provider, if that provider fails then it will fall back to another provider
 
 ## Demo
-The endpoints are documented on swagger page at:
+The endpoint is documented on swagger page at:
 
 https://email-services-app.herokuapp.com/api-docs
 
-Unfortunately there is an error I didn't have time to fix, stopping the endpoints 
-being run from swagger online; however they can be run locally.
+Unfortunately there is an error I didn't have time to fix, stopping the endpoint 
+being executed from swagger online; however it can be executed locally.
 
-There are 3 endpoints, for the coding test only the send endpoint is relevant:
+The demo endpoint is at:
 
 https://email-services-app.herokuapp.com/v1/email/send
 
@@ -45,7 +45,7 @@ curl --location --request POST 'http://email-services-app.herokuapp.com/v1/email
 }'
 ```
 
-The send api will try both
+The send api will try sendgrid first and mailgun second
 
 ## Install
 

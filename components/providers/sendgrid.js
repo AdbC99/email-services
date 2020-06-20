@@ -8,7 +8,7 @@ class SendGridProvider extends EmailProvider {
 
     send(email) {
         // Call validate(email) before using this to check we have valid input
-        console.log(`Email: sending an email via sendgrid`);
+        console.log(`Attempting to send an email via SendGrid`);
 
         let emailBody = {
             "personalizations": 

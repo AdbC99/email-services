@@ -27,121 +27,53 @@ router.post('/send', function(req, res, next) {
     let emailSendGrid = new sendgrid();
     let emailMailGun = new mailgun();
 
-    try {
-        emailSendGrid.validate(req.body);
-
-        emailSendGrid.send(req.body)
+    let trySendEmail = (payload, provider, resolve, reject) => {
+        provider.send(payload)
             .then(data => {
                 if (data.status > 300)
-                    throw new Error(data.statusText);
+                    reject(data.statusText);
+                else
+                    resolve(data.status);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    }
 
-                console.log('Success:', data.statusText);
+    try
+    {
+        // Validate email payload and throw an exception if anything is wrong
+        email.validate(req.body);
 
+        // I looked at a couple of alternatives to nesting the method in this way
+        // because I am not a big fan of nested promises. A chained promise in this case
+        // resulted in less clear code as I handled exceptions and invalid status codes
+        // separately, whereas a generic function that takes any email provider resulted
+        // in cleaner code for me this time.
+        trySendEmail(
+            req.body, 
+            emailSendGrid, 
+            (status)=>{ // SUCCESS
+                console.log('Email sent via SendGrid: Success:', status);
                 res.sendStatus(200);
-            })
-            .catch((error) => {
-                console.error('SendGrid Error:', error);
-
-                // Sendgrid failed so failover to mailgun
-                emailMailGun.send(req.body)
-                    .then(data => {
-                        if (data.status > 300)
-                            throw new Error(data.statusText);
-                            
-                        console.log('Success:', data.statusText);
+            }, 
+            (error)=>{  // FAIL AND RETRY
+                console.error('Failed to send email: Sendgrid:', error);
+                console.log('Retrying email send with MailGun');
+                trySendEmail(
+                    req.body, 
+                    emailMailGun, 
+                    (status)=>{ // SUCCESS
+                        console.log('Email sent via MailGun: Success:', status);
                         res.sendStatus(200);
-                    })
-                    .catch((error) => {
-                        console.error('MailGun Error:', error);
+                    }, 
+                    (error)=>{ // FAIL
+                        console.error('Failed to send email: MailGun:', error);
                         res.sendStatus(400);
-                    });
-            });
-    }
-    catch (err)
-    {
-        console.error(err.message)
-        res.status(400).send(err.message);
-    }
-});
-
-/**
- * Send an email via sendgrid
- * @route POST /email/sendgrid
- * @group email - Operations to send emails
- * @param {Email.model} email.body.required - the email
- * @returns {object} 200 - email was sent successfully
- * @returns {Error}  400 - failed to send email
- * @returns {Error}  default - Unexpected error
- */
-
-router.post('/sendgrid', function(req, res, next) {
-
-    let email = new sendgrid();
-
-    try {
-        email.validate(req.body);
-
-        email.send(req.body)
-            .then(data => {
-                if (data.status > 300)
-                {
-                    console.error('Error:', data.statusText)
-                }
-                else
-                {
-                    console.log('Success:', data.statusText);
-                }
-
-                res.status(data.status).send(data.statusText);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                res.sendStatus(400);
-            });
-    }
-    catch (err)
-    {
-        console.error(err.message)
-        res.status(400).send(err.message);
-    }
-});
-
-/**
- * Send an email via mailgun
- * @route POST /email/mailgun
- * @group email - Operations to send emails
- * @param {Email.model} email.body.required - the email
- * @returns {object} 200 - email was sent successfully
- * @returns {Error}  400 - failed to send email
- * @returns {Error}  default - Unexpected error
- */
-
-router.post('/mailgun', function(req, res, next) {
-
-    let email = new mailgun();
-
-    console.log("mailgun");
-
-    try {
-        email.validate(req.body);
-
-        email.send(req.body)
-            .then(data => {
-                if (data.status > 300)
-                {
-                    console.error('Error:', data.statusText)
-                }
-                else
-                {
-                    console.log('Success:', data.statusText);
-                }
-
-                res.status(data.status).send(data.statusText);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                res.sendStatus(400);
-            });
+                    }
+                );
+            }
+        );
     }
     catch (err)
     {
