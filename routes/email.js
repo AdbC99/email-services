@@ -27,16 +27,19 @@ router.post('/send', function(req, res, next) {
     let emailSendGrid = new sendgrid();
     let emailMailGun = new mailgun();
 
-    let trySendEmail = (payload, provider, resolve, reject) => {
-        provider.send(payload)
-            .then(data => {
-                if (data.status > 300)
-                    reject(data.statusText);
-                else
-                    resolve(data.status);
-            })
-            .catch((error) => {
-                reject(error);
+    let trySendEmail = function (payload, provider)
+    {
+        return new Promise((resolve, reject) => {
+            provider.send(payload)
+                .then(data => {
+                    if (data.status > 300)
+                        reject(data.statusText);
+                    else
+                        resolve(data.status);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
             });
     }
 
@@ -46,34 +49,29 @@ router.post('/send', function(req, res, next) {
         emailSendGrid.validate(req.body);
 
         // I looked at a couple of alternatives to nesting the method in this way
-        // because I am not a big fan of deep nesting. A chained promise in this case
+        // because I am not a big fan of nesting promises. A chained promise in this case
         // resulted in less clear code as I handled exceptions and invalid status codes
         // separately, whereas a generic function that takes any email provider resulted
         // in cleaner code for me this time.
-        trySendEmail(
-            req.body, 
-            emailSendGrid, 
-            (status)=>{ // SUCCESS
+        trySendEmail(req.body, emailSendGrid)
+            .then(status =>{ // SUCCESS
                 console.log('Email sent via SendGrid: Success:', status);
                 res.sendStatus(200);
-            }, 
-            (error)=>{  // FAIL AND RETRY
+            })
+            .catch(error =>{ // FAIL AND RETRY
                 console.error('Failed to send email: Sendgrid:', error);
                 console.log('Retrying email send with MailGun');
-                trySendEmail(
-                    req.body, 
-                    emailMailGun, 
-                    (status)=>{ // SUCCESS
+
+                trySendEmail(req.body, emailMailGun)
+                    .then(status =>{ // SUCCESS
                         console.log('Email sent via MailGun: Success:', status);
                         res.sendStatus(200);
-                    }, 
-                    (error)=>{ // FAIL
+                    })
+                    .catch(error => { // FAIL
                         console.error('Failed to send email: MailGun:', error);
                         res.sendStatus(400);
-                    }
-                );
-            }
-        );
+                    });
+            });
     }
     catch (err)
     {
