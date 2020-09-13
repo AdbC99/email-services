@@ -16,7 +16,7 @@
     "http-errors": "^1.7.3",
     "jade": "^1.11.0",
     "morgan": "^1.9.1",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "util.promisify": "^1.0.1"
   },
   "engines": {
